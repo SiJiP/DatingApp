@@ -4,33 +4,38 @@ using DatingApp.API.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using DatingApp.API.Entities;
+using System;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DatingApp.API.Controllers
 {
-  [Route("api/[controller]")]
-    [ApiController]
-    public class ValuesController : ControllerBase
+    public class UsersController : BaseApiController
     {
 
         private readonly DataContext _context;
-        public ValuesController(DataContext context)
+
+        public UsersController(DataContext context)
         {
             _context = context;
         }
         // GET api/values
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> GetValues()
+        public async Task<ActionResult<IEnumerable<AppUser>>> GetValues()
         {
-            var values = await _context.Values.ToListAsync();
+            var values = await _context.Users.ToListAsync();
 
             return Ok(values);
         }
 
         // GET api/values/5
+        [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetValue(int id)
+        public async Task<ActionResult<AppUser>> GetValue(int id)
         {
-            var value = await _context.Values.FirstOrDefaultAsync(x => x.Id == id);
+            var value = await _context.Users.FindAsync(id);
 
             return Ok(value);
         }

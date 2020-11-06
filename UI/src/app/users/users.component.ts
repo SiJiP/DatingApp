@@ -2,17 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-values',
-  templateUrl: './values.component.html',
-  styleUrls: ['./values.component.scss']
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss']
 })
-export class ValuesComponent implements OnInit {
+export class UsersComponent implements OnInit {
   values: any;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get('http://localhost:5000/api/values')
+    this.http.get('https://localhost:5001/api/users')
     .subscribe(
       res => this.values = res,
       err => console.log(err)
