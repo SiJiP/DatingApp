@@ -1,4 +1,6 @@
 .vscode
 bin
+.idea
+.vs
 obj
 *.db

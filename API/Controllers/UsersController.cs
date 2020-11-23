@@ -7,52 +7,53 @@ using System.Threading.Tasks;
 using DatingApp.API.Entities;
 using System;
 using System.Diagnostics;
+using AutoMapper;
+using DatingApp.API.DTOs;
+using DatingApp.API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DatingApp.API.Controllers
 {
+    [Authorize]
     public class UsersController : BaseApiController
     {
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        private readonly DataContext _context;
-
-        public UsersController(DataContext context)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            _context = context;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
-        // GET api/values
-        [AllowAnonymous]
+        // GET api/users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetValues()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
-            var values = await _context.Users.ToListAsync();
+            var users = await _userRepository.GetMembersAsync();
 
-            return Ok(values);
+            return Ok(users);
         }
 
-        // GET api/values/5
-        [Authorize]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetValue(int id)
+        // GET api/users/5
+        [HttpGet("{username}")]
+        public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
-            var value = await _context.Users.FindAsync(id);
-
-            return Ok(value);
+            return await _userRepository.GetMemberAsync(username);
         }
 
-        // POST api/values
+        // POST api/users
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/values/5
+        // PUT api/users/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/values/5
+        // DELETE api/users/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
