@@ -15,6 +15,11 @@ import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { SharedModule } from './_modules/shared.module';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
+import { CommonModule } from '@angular/common';
+import { MemberListComponent } from './members/member-list/member-list.component';
+import { MemberCardComponent } from './members/member-card/member-card.component';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 
 @NgModule({
   declarations: [
@@ -22,12 +27,16 @@ import { ErrorInterceptor } from './_interceptors/error.interceptor';
     UsersComponent,
     NavComponent,
     HomeComponent,
-      RegisterComponent,
-      ListsComponent,
-      MessagesComponent
+    RegisterComponent,
+    ListsComponent,
+    MessagesComponent,
+    MemberListComponent,
+    MemberCardComponent,
+    MemberDetailComponent
    ],
   imports: [
     BrowserModule,
+    CommonModule,
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
@@ -36,7 +45,8 @@ import { ErrorInterceptor } from './_interceptors/error.interceptor';
   ],
   providers: [
     AccountService,
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
